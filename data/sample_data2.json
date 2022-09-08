@@ -1,0 +1,104 @@
+[
+  {
+    "data_item_name": "BCM_InBrakeFront",
+    "value": 1,
+    "timestamp": 1661999133144,
+    "device_uuid": "s_20000"
+  },
+  {
+    "data_item_name": "BCM_InBrakeFront",
+    "value": 1,
+    "timestamp": 1661999136163,
+    "device_uuid": "s_20000"
+  },
+  {
+    "data_item_name": "BCM_InBrakeFront",
+    "value": 2,
+    "timestamp": 1661999137103,
+    "device_uuid": "s_20000"
+  },
+  {
+    "data_item_name": "BCM_InBrakeFront",
+    "value": 5,
+    "timestamp": 1661999137859,
+    "device_uuid": "s_20000"
+  },
+  {
+    "data_item_name": "BCM_InBrakeFront",
+    "value": 4,
+    "timestamp": 1661999139743,
+    "device_uuid": "s_20000"
+  },
+  {
+    "data_item_name": "BCM_InBrakeFront",
+    "value": 5,
+    "timestamp": 1661999144568,
+    "device_uuid": "s_20000"
+  },
+  {
+    "data_item_name": "BCM_InBrakeFront",
+    "value": 4,
+    "timestamp": 1661999149255,
+    "device_uuid": "s_20000"
+  },
+  {
+    "data_item_name": "BCM_InBrakeFront",
+    "value": 2,
+    "timestamp": 1661999151435,
+    "device_uuid": "s_20000"
+  },
+  {
+    "data_item_name": "BCM_InBrakeFront",
+    "value": 3,
+    "timestamp": 1661999152354,
+    "device_uuid": "s_20000"
+  },
+  {
+    "data_item_name": "BCM_InBrakeFront",
+    "value": 1,
+    "timestamp": 1661999155323,
+    "device_uuid": "s_20000"
+  },
+  {
+    "data_item_name": "MOT_ThrottleRef1_V",
+    "value": 2,
+    "timestamp": 1661999133302,
+    "device_uuid": "s_20000"
+  },
+  {
+    "data_item_name": "MOT_ThrottleRef1_V",
+    "value": 5,
+    "timestamp": 1661999133399,
+    "device_uuid": "s_20000"
+  },
+  {
+    "data_item_name": "MOT_ThrottleRef1_V",
+    "value": 4,
+    "timestamp": 1661999133497,
+    "device_uuid": "s_20000"
+  },
+  {
+    "data_item_name": "MOT_ThrottleRef1_V",
+    "value": 3,
+    "timestamp": 1661999133595,
+    "device_uuid": "s_20000"
+  },
+  {
+    "data_item_name": "MOT_ThrottleRef1_V",
+    "value": 1,
+    "timestamp": 1661999133693,
+    "device_uuid": "s_20000"
+  },
+  {
+    "data_item_name": "MOT_ThrottleRef1_V",
+    "value": 1,
+    "timestamp": 1661999133791,
+    "device_uuid": "s_20000"
+  },
+  {
+    "data_item_name": "MOT_ThrottleRef1_V",
+    "value": 2,
+    "timestamp": 1661999133887,
+    "device_uuid": "s_20000"
+  }
+]
