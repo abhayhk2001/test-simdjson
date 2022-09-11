@@ -1,63 +1,63 @@
 Running for count: 500
-Time taken to format file: 0.007963418960571289
-Time taken to load file:  0.019031047821044922
-Time taken to pivot table:  0.0707395076751709
-Time taken to convert to parquet:  0.21766424179077148
-Total time taken: 0.2884037494659424
+Time taken to format file: 0.029996871948242188
+Time taken to load file:  0.05229020118713379
+Time taken to pivot table:  0.1577286720275879
+Time taken to convert to parquet:  0.3672652244567871
+Total time taken: 0.524993896484375
 
 
 
 Running for count: 1000
-Time taken to format file: 0.0049991607666015625
-Time taken to load file:  0.008997678756713867
-Time taken to pivot table:  0.03200054168701172
-Time taken to convert to parquet:  0.06000256538391113
-Total time taken: 0.09200310707092285
+Time taken to format file: 0.005961418151855469
+Time taken to load file:  0.009041786193847656
+Time taken to pivot table:  0.033960580825805664
+Time taken to convert to parquet:  0.06504011154174805
+Total time taken: 0.09900069236755371
 
 
 
 Running for count: 5000
-Time taken to format file: 0.016956090927124023
-Time taken to load file:  0.038036346435546875
-Time taken to pivot table:  1.181112289428711
-Time taken to convert to parquet:  0.8042073249816895
-Total time taken: 1.9853196144104004
+Time taken to format file: 0.019994020462036133
+Time taken to load file:  0.04904651641845703
+Time taken to pivot table:  1.2223050594329834
+Time taken to convert to parquet:  0.7762365341186523
+Total time taken: 1.9985415935516357
 
 
 
 Running for count: 10000
-Time taken to format file: 0.0371859073638916
-Time taken to load file:  0.10381960868835449
-Time taken to pivot table:  2.199732542037964
-Time taken to convert to parquet:  1.0320549011230469
-Total time taken: 3.2317874431610107
+Time taken to format file: 0.04299807548522949
+Time taken to load file:  0.1309964656829834
+Time taken to pivot table:  2.317233085632324
+Time taken to convert to parquet:  1.0707893371582031
+Total time taken: 3.3880224227905273
 
 
 
 Running for count: 50000
-Time taken to format file: 0.23956537246704102
-Time taken to load file:  0.4879570007324219
-Time taken to pivot table:  13.066982507705688
-Time taken to convert to parquet:  3.341413974761963
-Total time taken: 16.40839648246765
+Time taken to format file: 0.23497605323791504
+Time taken to load file:  0.5990457534790039
+Time taken to pivot table:  17.43807554244995
+Time taken to convert to parquet:  4.379986763000488
+Total time taken: 21.81806230545044
 
 
 
 Running for count: 100000
-Time taken to format file: 0.38869643211364746
-Time taken to load file:  0.9663040637969971
-Time taken to pivot table:  30.423524379730225
-Time taken to convert to parquet:  6.194450855255127
-Total time taken: 36.61797523498535
+Time taken to format file: 0.5490050315856934
+Time taken to load file:  1.742384672164917
+Time taken to pivot table:  51.16325259208679
+Time taken to convert to parquet:  12.510972261428833
+Total time taken: 63.674224853515625
 
 
 
 Running for count: 124703
-Time taken to format file: 0.4069828987121582
-Time taken to load file:  1.2785587310791016
-Time taken to pivot table:  53.44132590293884
-Time taken to convert to parquet:  9.903917789459229
-Total time taken: 63.34524369239807
+Time taken to format file: 0.5159420967102051
+Time taken to load file:  1.2996585369110107
+Time taken to pivot table:  69.60493206977844
+Time taken to convert to parquet:  10.585689306259155
+Total time taken: 80.1906213760376
 
 
 

@@ -20,6 +20,8 @@ def format_file(filename, count):
                 break
         fw.write(prev_line)
     fw.write("]".encode('ascii'))
+    fr.close()
+    fw.close()
     return f"./data/{filename[:-5] + '_modified.json'}"
 
 
