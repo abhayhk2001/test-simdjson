@@ -66,6 +66,18 @@ def run(count):
 
 
 counts = [500, 1000, 5000, 10000, 50000, 100000, 124703]
+lformat_time = []
+lformat_memory_peak = []
+lformat_memory_current = [] 
+lloading_time = [] 
+lloading_memory_peak = [] 
+lloading_memory_current = [] 
+lpivot_time = [] 
+lpivot_memory_peak = [] 
+lpivot_memory_current = [] 
+lconvert_time = [] 
+lconvert_memory_peak = [] 
+lconvert_memory_current = []
 for count in counts:
     print(f"Running for count: {count}")
     tracemalloc.start()
