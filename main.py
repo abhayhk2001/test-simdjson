@@ -4,6 +4,7 @@ from datetime import datetime as dt
 from time import time
 import gzip
 import os
+import tracemalloc
 
 
 def format_file(filename, count):
@@ -51,10 +52,14 @@ def run(count):
     return (filename, f"{filename[:-5]}.parquet")
 
 
-counts = [500, 1000, 5000, 10000, 50000, 100000, 124703]
+counts = [500, 1000, 5000, 10000, 50000, 100000]
 for count in counts:
     print(f"Running for count: {count}")
+    tracemalloc.start()
     (fname, parquet_name) = run(count)
+    current, peak = tracemalloc.get_traced_memory()
+    print(
+        f"Current memory usage is {current / 10**6}MB; Peak was {peak / 10**6}MB")
     print("\n\n")
     os.remove(fname)
     os.remove(parquet_name)
