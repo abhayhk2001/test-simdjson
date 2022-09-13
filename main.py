@@ -52,7 +52,7 @@ def run(count):
     return (filename, f"{filename[:-5]}.parquet")
 
 
-counts = [500, 1000, 5000, 10000, 50000, 100000]
+counts = [500, 1000, 5000, 10000, 50000, 100000, 124703]
 for count in counts:
     print(f"Running for count: {count}")
     tracemalloc.start()
