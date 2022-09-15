@@ -1,6 +1,5 @@
 import simdjson
 import pandas as pd
-from datetime import datetime as dt
 from time import time
 import gzip
 import os
@@ -31,54 +30,35 @@ def run(count):
     filename = format_file("sample_json_test_data_2.json", count)
     format_time = time() - start
     current, peak = tracemalloc.get_traced_memory()
-    print(
-        f"Formatting memory usage is {current / 10**6}MB; Peak was {peak / 10**6}MB")
-    print(f"Time taken to format file: {format_time}")
+    row.extend([format_time, current / 10**6, peak / 10**6])
+
     parser = simdjson.Parser()
     doc = parser.load(filename, True)
     df = pd.DataFrame(doc)
     load_time = time() - format_time - start
     current, peak = tracemalloc.get_traced_memory()
-    print(
-        f"Loading File memory usage is {current / 10**6}MB; Peak was {peak / 10**6}MB")
-    print("Time taken to load file: ", load_time)
+    row.extend([load_time, current / 10**6, peak / 10**6])
 
-    # df['timestamp'] = df['timestamp'].apply(lambda x: dt.fromtimestamp(x/1000))
     df = df.pivot_table(index=['timestamp', 'device_uuid'],
                         columns='data_item_name', aggfunc='first')
-    # df.columns.set_levels([""], level=0, inplace=True)
-    # df.columns = df.columns.droplevel(0)
     pivot_time = time() - load_time - start
     current, peak = tracemalloc.get_traced_memory()
-    print(
-        f"Pivoting Table memory usage is {current / 10**6}MB; Peak was {peak / 10**6}MB")
-    print("Time taken to pivot table: ", pivot_time)
+    row.extend([pivot_time, current / 10**6, peak / 10**6])
 
     df.to_parquet(f"{filename[:-5]}.parquet", engine="pyarrow")
-
     convert_time = time() - pivot_time - start
     current, peak = tracemalloc.get_traced_memory()
-    print(
-        f"Converting to Parquet memory usage is {current / 10**6}MB; Peak was {peak / 10**6}MB")
-    print("Time taken to convert to parquet: ", convert_time)
-    print(f"Total time taken: {time() - start}")
+    row.extend([convert_time, current / 10**6, peak / 10**6])
+
+    row.append(time() - start)
     return (filename, f"{filename[:-5]}.parquet")
 
 
 counts = [500, 1000, 5000, 10000, 50000, 100000, 124703]
-lformat_time = []
-lformat_memory_peak = []
-lformat_memory_current = [] 
-lloading_time = [] 
-lloading_memory_peak = [] 
-lloading_memory_current = [] 
-lpivot_time = [] 
-lpivot_memory_peak = [] 
-lpivot_memory_current = [] 
-lconvert_time = [] 
-lconvert_memory_peak = [] 
-lconvert_memory_current = []
+
+rows = []
 for count in counts:
+    row = []
     print(f"Running for count: {count}")
     tracemalloc.start()
     (fname, parquet_name) = run(count)
@@ -86,3 +66,19 @@ for count in counts:
     print("\n\n")
     os.remove(fname)
     os.remove(parquet_name)
+    rows.append(row)
+
+col_name = ['Formatting', 'Loading File',
+            'Pivotting Table', 'Converting Table to Parquet']
+col_name_sub = ['Time', 'Peak(MB)', 'Current(MB)']
+cols = []
+for i in col_name:
+    for j in col_name_sub:
+        cols.append((i, j))
+cols.append(('Total',))
+col_list = pd.MultiIndex.from_tuples(cols)
+
+df = pd.DataFrame(rows, counts, col_list)
+print(df)
+
+df.to_excel("./results.xlsx")
