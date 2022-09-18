@@ -1,11 +1,12 @@
-from pathlib import Path
 import simdjson
-import modin.pandas as pd
+import pandas as pd
 from time import time
 import gzip
 import os
 import tracemalloc
-import shutil
+
+## Changes Necessary
+# 1. 
 
 
 def format_file(filename, count):
@@ -25,14 +26,6 @@ def format_file(filename, count):
     fr.close()
     fw.close()
     return f"./data/{filename[:-5] + '_modified.json'}"
-
-def merge_files(dir):
-    if(not os.path.isdir(dir)):
-        return
-    pathlist = Path(dir).glob('**/*.asm')
-    for path in pathlist:
-        path_in_str = str(path)
-        print(path_in_str)
 
 
 def run(count):
@@ -61,7 +54,6 @@ def run(count):
     row.extend([convert_time, current / 10**6, peak / 10**6])
 
     row.append(time() - start)
-    merge_files( f"{filename[:-5]}.parquet")
     return (filename, f"{filename[:-5]}.parquet")
 
 
@@ -76,7 +68,7 @@ for count in counts:
     tracemalloc.stop()
     print("\n\n")
     os.remove(fname)
-    shutil.rmtree(parquet_name)
+    os.remove(parquet_name)
     rows.append(row)
 
 col_name = ['Formatting', 'Loading File',
@@ -88,6 +80,7 @@ for i in col_name:
         cols.append((i, j))
 cols.append(('Total',))
 col_list = pd.MultiIndex.from_tuples(cols)
+
 df = pd.DataFrame(rows, counts, col_list)
 print(df)
 
