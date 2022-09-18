@@ -1,6 +1,8 @@
+import fnmatch
 from pathlib import Path
 import simdjson
 import modin.pandas as pd
+import pandas as pds
 from time import time
 import gzip
 import os
@@ -26,13 +28,20 @@ def format_file(filename, count):
     fw.close()
     return f"./data/{filename[:-5] + '_modified.json'}"
 
+
 def merge_files(dir):
-    if(not os.path.isdir(dir)):
+    if (not os.path.isdir(dir)):
         return
-    pathlist = Path(dir).glob('**/*.asm')
+    if (len(fnmatch.filter(os.listdir(dir), '*.parquet')) == 1):
+        return
+    pathlist = Path(dir).glob('**/*.parquet')
+    df = pd.DataFrame()
     for path in pathlist:
-        path_in_str = str(path)
-        print(path_in_str)
+        path = str(path)
+        df1 = pds.read_parquet(path)
+        df = pd.merge(df, df1, how='outer',
+                      left_index=True, right_index=True)
+    df.to_parquet(dir + '/final.parquet')
 
 
 def run(count):
@@ -61,7 +70,7 @@ def run(count):
     row.extend([convert_time, current / 10**6, peak / 10**6])
 
     row.append(time() - start)
-    merge_files( f"{filename[:-5]}.parquet")
+    merge_files(f"{filename[:-5]}.parquet")
     return (filename, f"{filename[:-5]}.parquet")
 
 
