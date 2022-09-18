@@ -1,13 +1,15 @@
+from distributed import Client
+client = Client(process=False)
+import modin.pandas as pd
+import shutil
+import tracemalloc
+import os
+import gzip
+from time import time
+import pandas as pds
 import fnmatch
 from pathlib import Path
 import simdjson
-import modin.pandas as pd
-import pandas as pds
-from time import time
-import gzip
-import os
-import tracemalloc
-import shutil
 
 
 def format_file(filename, count):
@@ -70,7 +72,7 @@ def run(count):
     row.extend([convert_time, current / 10**6, peak / 10**6])
 
     row.append(time() - start)
-    merge_files(f"{filename[:-5]}.parquet")
+    # merge_files(f"{filename[:-5]}.parquet")
     return (filename, f"{filename[:-5]}.parquet")
 
 
