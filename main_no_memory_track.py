@@ -1,5 +1,5 @@
-from distributed import Client
-client = Client(process=False)
+# from distributed import Client
+# client = Client(process=False)
 import modin.pandas as pd
 import shutil
 import tracemalloc
@@ -50,17 +50,22 @@ def run(count):
     start = time()
     filename = format_file("sample_json_test_data_2.json", count)
     format_time = time() - start
+    row.extend([format_time])
 
     parser = simdjson.Parser()
     doc = parser.load(filename, True)
     df = pd.DataFrame(doc)
     load_time = time() - format_time - start
+    row.extend([load_time])
 
     df = df.pivot_table(index=['timestamp', 'device_uuid'],
                         columns='data_item_name', aggfunc='first')
     pivot_time = time() - load_time - start
+    row.extend([pivot_time])
+
     df.to_parquet(f"{filename[:-5]}.parquet", engine="pyarrow")
     convert_time = time() - pivot_time - start
+    row.extend([convert_time])
 
     row.append(time() - start)
     # merge_files(f"{filename[:-5]}.parquet")
