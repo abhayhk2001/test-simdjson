@@ -45,6 +45,9 @@ def merge_files(dir):
                       left_index=True, right_index=True)
     df.to_parquet(dir + '/final.parquet')
 
+def custom_algorithm():
+    
+    pass
 
 def run(count):
     start = time()
@@ -73,6 +76,7 @@ def run(count):
 
 
 counts = [500, 1000, 5000, 10000, 50000, 100000, 124703]
+counts = [500, 1000, 5000]
 
 rows = []
 for count in counts:
