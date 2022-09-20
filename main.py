@@ -102,7 +102,7 @@ for count in counts:
     prev = row
     print("\n\n")
     os.remove(fname)
-    os.remove(parquet_name)
+    # os.remove(parquet_name)
     rows.append(row)
 
 col_name = ['Formatting', 'Loading File',
