@@ -110,4 +110,8 @@ def main(file, counts):
     create_df(file, rows, counts)
 
 
-main("sample_json_test_data_2.json", [50000, 100000, 0])
+# main("sample_json_test_data_2.json", [50000, 100000, 0]) ## Count = 124703
+main("connectdata-day=2022-09-19_device=s_96_0.json",
+     [0])  # Count = 453132
+# main("connectdata-day=2022-09-19_device=s_96_2.json",
+#      [50000, 100000, 0])  # Count = 836753
