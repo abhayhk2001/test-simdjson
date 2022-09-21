@@ -3,7 +3,6 @@ import pandas as pd
 from time import time
 import gzip
 import os
-import tracemalloc
 
 
 def format_file(filename, count):
@@ -25,95 +24,87 @@ def format_file(filename, count):
     return f"./data/{filename[:-5] + '_modified.json'}"
 
 
-def new_algo(df):
-    print(len(df['data_item_name'].unique()))
-    pd.DataFrame()
-    pass
-
-
-def run(count):
-    start = time()
-    filename = format_file("sample_json_test_data_2.json", count)
-    format_time = time() - start
+def calc_increase(prev, time, row):
     if (len(prev) == 0):
-        format_increase = ''
+        increase = ''
     else:
-        format_increase = ((format_time - prev[len(row)])/prev[len(row)]) * 100
-        format_increase = str(round(format_increase, 3)) + '%'
+        increase = ((time - prev[len(row)])/prev[len(row)]) * 100
+        increase = str(round(increase, 3)) + '%'
 
-    row.extend([round(format_time, 4), format_increase])
+    return ([round(time, 4), increase])
 
+
+def run(file, count, prev):
+    # Starting Time Recording
+    total_time = 0
+    start = time()
+    row = []
+
+    # Formatting JSON
+    filename = format_file(file, count)
+    format_time = time() - start
+    total_time += format_time
+    row.extend(calc_increase(prev, format_time, row))
+
+    start = time()
+    # Loading JSON file to Python Dataframe
     parser = simdjson.Parser()
     doc = parser.load(filename, True)
     df = pd.DataFrame(doc)
-    load_time = time() - format_time - start
-    if (len(prev) == 0):
-        load_increase = ''
-    else:
-        load_increase = ((load_time - prev[len(row)])/prev[len(row)]) * 100
-        load_increase = str(round(load_increase, 3)) + '%'
+    load_time = time() - start
+    total_time += load_time
+    row.extend(calc_increase(prev, load_time, row))
 
-    row.extend([round(load_time, 4), load_increase])
-
-    # new_algo(df)
+    start = time()
+    # Using Pivot table to recieve appropriate output
     df = df.pivot_table(index=['timestamp', 'device_uuid'],
                         columns='data_item_name', values='value', aggfunc='first')
-    pivot_time = time() - load_time - start
-    if (len(prev) == 0):
-        pivot_increase = ''
-    else:
-        pivot_increase = ((pivot_time - prev[len(row)])/prev[len(row)]) * 100
-        pivot_increase = str(round(pivot_increase, 3)) + '%'
+    pivot_time = time() - start
+    total_time += pivot_time
+    row.extend(calc_increase(prev, pivot_time, row))
 
-    row.extend([round(pivot_time, 4), pivot_increase])
-
+    start = time()
+    # Converting to Parquet
     df.to_parquet(f"{filename[:-5]}.parquet", engine="pyarrow")
-    convert_time = time() - pivot_time - start
-    if (len(prev) == 0):
-        convert_increase = ''
-    else:
-        convert_increase = (
-            (convert_time - prev[len(row)])/prev[len(row)]) * 100
-        convert_increase = str(round(convert_increase, 3)) + '%'
-
-    row.extend([round(convert_time, 4), convert_increase])
-
-    total_time = time() - start
-    if (len(prev) == 0):
-        total_increase = ''
-    else:
-        total_increase = ((total_time - prev[len(row)])/prev[len(row)]) * 100
-        total_increase = str(round(total_increase, 3)) + '%'
-
-    row.extend([round(total_time, 4), total_increase])
-    return (filename, f"{filename[:-5]}.parquet")
+    convert_time = time() - start
+    total_time += convert_time
+    row.extend(calc_increase(prev, convert_time, row))
+    return (filename, f"{filename[:-5]}.parquet", total_time, row)
 
 
-counts = [500, 1000, 5000, 10000, 50000, 100000, 124703]
+def create_df(fname, rows, counts):
+    col_name = ['Formatting', 'Loading File',
+                'Pivotting Table', 'Converting Table to Parquet']
+    col_name_sub = ['Time', 'Increase']
+    cols = []
+    for i in col_name:
+        for j in col_name_sub:
+            cols.append((i, j))
+    cols.extend([('Total', 'Time'), ('Total', 'Increase')])
+    col_list = pd.MultiIndex.from_tuples(cols)
+    df = pd.DataFrame(rows, counts, col_list)
+    df.to_excel(f"./output/results_{fname[:-5]}.xlsx")
 
-rows = []
-prev = []
-for count in counts:
-    row = []
-    print(f"Running for count: {count}")
-    (fname, parquet_name) = run(count)
-    prev = row
-    print("\n\n")
-    os.remove(fname)
-    os.remove(parquet_name)
-    rows.append(row)
+    print(df)
 
-col_name = ['Formatting', 'Loading File',
-            'Pivotting Table', 'Converting Table to Parquet']
-col_name_sub = ['Time', 'Increase']
-cols = []
-for i in col_name:
-    for j in col_name_sub:
-        cols.append((i, j))
-cols.extend([('Total', 'Time'), ('Total', 'Increase')])
-col_list = pd.MultiIndex.from_tuples(cols)
 
-df = pd.DataFrame(rows, counts, col_list)
-print(df)
+def main(file, counts):
+    rows, prev = [], []
+    for count in counts:
+        if count == 0:
+            print(f"Running for whole file")
+        else:
+            print(f"Running for count: {count}")
 
-df.to_excel("./output/results.xlsx")
+        (fname, parquet_name, total_time, row) = run(
+            file, count, prev)
+
+        row.extend(calc_increase(prev, total_time, row))
+        prev = row
+        os.remove(fname)
+        os.remove(parquet_name)
+        rows.append(row)
+    create_df(file, rows, counts)
+
+
+main("sample_json_test_data_2.json", [500, 10000, 50000, 100000, 0])
