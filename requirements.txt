@@ -1,8 +1,10 @@
 autopep8==1.7.0
 cramjam==2.5.0
+et-xmlfile==1.1.0
 fastparquet==0.8.3
 fsspec==2022.8.2
 numpy==1.23.2
+openpyxl==3.0.10
 packaging==21.3
 pandas==1.4.4
 pyarrow==9.0.0
