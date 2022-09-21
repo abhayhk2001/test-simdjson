@@ -102,9 +102,12 @@ def main(file, counts):
         row.extend(calc_increase(prev, total_time, row))
         prev = row
         os.remove(fname)
-        os.remove(parquet_name)
+        if (count != 0):
+            os.remove(parquet_name)
+        else:
+            os.replace(parquet_name, "./extras"+parquet_name[6:])
         rows.append(row)
     create_df(file, rows, counts)
 
 
-main("sample_json_test_data_2.json", [500, 10000, 50000, 100000, 0])
+main("sample_json_test_data_2.json", [50000, 100000, 0])
