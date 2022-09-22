@@ -1,4 +1,4 @@
-env/
+env*/
 **/*.code-workspace
 __pycache__/
 results*.*
