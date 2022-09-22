@@ -88,8 +88,19 @@ def create_df(fname, rows, counts):
     print(df)
 
 
+def compare_gz(parquet_gz, filename):
+    with open(parquet_gz, 'rb') as f_in, gzip.open(parquet_gz+'.gz', 'wb') as f_out:
+        f_out.writelines(f_in)
+    json_gz_size = os.path.getsize(f'./data/{filename}.gz')
+    parquet_gz_size = os.path.getsize(parquet_gz+'.gz')
+    print("Json .gz file size: ", json_gz_size, " bytes")
+    print("Parquet .gz file size: ", parquet_gz_size, " bytes")
+    os.remove(parquet_gz+'.gz')
+
+
 def main(file, counts):
     rows, prev = [], []
+    final_parquet = ""
     for count in counts:
         if count == 0:
             print(f"Running for whole file")
@@ -105,11 +116,15 @@ def main(file, counts):
         if (count != 0):
             os.remove(parquet_name)
         else:
+            final_parquet = "./extras" + parquet_name[6:]
             os.replace(parquet_name, "./extras"+parquet_name[6:])
         rows.append(row)
+    compare_gz(final_parquet, file)
     create_df(file, rows, counts)
 
 
 main("sample_json_test_data_2.json", [50000, 100000, 0])  # Count = 124703
-main("connectdata-day=2022-09-19_device=s_96_0.json", [50000, 100000, 200000, 400000, 0])  # Count = 453132
-main("connectdata-day=2022-09-19_device=s_96_2.json", [100000, 200000, 400000, 600000, 800000, 0])  # Count = 836753
+# main("connectdata-day=2022-09-19_device=s_96_0.json",
+#      [50000, 100000, 200000, 400000, 0])  # Count = 453132
+# main("connectdata-day=2022-09-19_device=s_96_2.json",
+#      [100000, 200000, 400000, 600000, 800000, 0])  # Count = 836753
