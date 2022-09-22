@@ -34,6 +34,32 @@ def calc_increase(prev, time, row):
     return ([round(time, 4), increase])
 
 
+def compare_gz(parquet_gz, filename):
+    with open(parquet_gz, 'rb') as f_in, gzip.open(parquet_gz+'.gz', 'wb') as f_out:
+        f_out.writelines(f_in)
+    json_gz_size = os.path.getsize(f'./data/{filename}.gz')
+    parquet_gz_size = os.path.getsize(parquet_gz+'.gz')
+    print("Json .gz file size: ", json_gz_size, " bytes")
+    print("Parquet .gz file size: ", parquet_gz_size, " bytes")
+    os.remove(parquet_gz+'.gz')
+
+
+def create_df(fname, rows, counts):
+    col_name = ['Formatting', 'Loading File',
+                'Pivotting Table', 'Converting Table to Parquet']
+    col_name_sub = ['Time', 'Increase']
+    cols = []
+    for i in col_name:
+        for j in col_name_sub:
+            cols.append((i, j))
+    cols.extend([('Total', 'Time'), ('Total', 'Increase')])
+    col_list = pd.MultiIndex.from_tuples(cols)
+    df = pd.DataFrame(rows, counts, col_list)
+    df.to_excel(f"./output/results_{fname[:-5]}.xlsx")
+
+    print(df)
+
+
 def run(file, count, prev):
     # Starting Time Recording
     total_time = 0
@@ -72,32 +98,6 @@ def run(file, count, prev):
     return (filename, f"{filename[:-5]}.parquet", total_time, row)
 
 
-def create_df(fname, rows, counts):
-    col_name = ['Formatting', 'Loading File',
-                'Pivotting Table', 'Converting Table to Parquet']
-    col_name_sub = ['Time', 'Increase']
-    cols = []
-    for i in col_name:
-        for j in col_name_sub:
-            cols.append((i, j))
-    cols.extend([('Total', 'Time'), ('Total', 'Increase')])
-    col_list = pd.MultiIndex.from_tuples(cols)
-    df = pd.DataFrame(rows, counts, col_list)
-    df.to_excel(f"./output/results_{fname[:-5]}.xlsx")
-
-    print(df)
-
-
-def compare_gz(parquet_gz, filename):
-    with open(parquet_gz, 'rb') as f_in, gzip.open(parquet_gz+'.gz', 'wb') as f_out:
-        f_out.writelines(f_in)
-    json_gz_size = os.path.getsize(f'./data/{filename}.gz')
-    parquet_gz_size = os.path.getsize(parquet_gz+'.gz')
-    print("Json .gz file size: ", json_gz_size, " bytes")
-    print("Parquet .gz file size: ", parquet_gz_size, " bytes")
-    os.remove(parquet_gz+'.gz')
-
-
 def main(file, counts):
     rows, prev = [], []
     final_parquet = ""
@@ -123,7 +123,7 @@ def main(file, counts):
     create_df(file, rows, counts)
 
 
-main("sample_json_test_data_2.json", [50000, 100000, 0])  # Count = 124703
+main("sample_json_test_data_2.json", [0])  # Count = 124703
 # main("connectdata-day=2022-09-19_device=s_96_0.json",
 #      [50000, 100000, 200000, 400000, 0])  # Count = 453132
 # main("connectdata-day=2022-09-19_device=s_96_2.json",
