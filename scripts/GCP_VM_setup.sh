@@ -12,8 +12,3 @@ pip install -r requirements.txt
 mkdir output extras
 clear
 
-### remove all results 
-rm output/*
-
-### download output files
-readlink -f output/
