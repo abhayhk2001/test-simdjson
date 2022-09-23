@@ -113,7 +113,7 @@ def main(file, counts):
         row.extend(calc_increase(prev, total_time, row))
         prev = row
         os.remove(fname)
-        if (count != 0):
+        if (count != counts[-1]):
             os.remove(parquet_name)
         else:
             final_parquet = "./extras" + parquet_name[6:]
@@ -123,6 +123,6 @@ def main(file, counts):
     create_df(file, rows, counts)
 
 
-main("sample_json_test_data_2.json", [124703])
-main("connectdata-day=2022-09-19_device=s_96_0.json", [453132])
-main("connectdata-day=2022-09-19_device=s_96_2.json", [836753])
+main("sample_json_test_data_2.json", [1000])
+# main("connectdata-day=2022-09-19_device=s_96_0.json", [453132])
+# main("connectdata-day=2022-09-19_device=s_96_2.json", [836753])
