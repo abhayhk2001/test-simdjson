@@ -47,12 +47,12 @@ def compare_gz(parquet_gz, filename):
 def create_df(rows, counts):
     col_name = ['Formatting', 'Loading File',
                 'Pivotting Table', 'Converting Table to Parquet']
-    col_name_sub = ['Time', 'Increase']
+    col_name_sub = ['Time', 'Increase', 'Avg Memory(GB)']
     cols = []
     for i in col_name:
         for j in col_name_sub:
             cols.append((i, j))
-    cols.extend([('Total', 'Time'), ('Total', 'Increase', 'Avg Memory(GB)')])
+    cols.extend([('Total', 'Time'), ('Total', 'Increase')])
     col_list = pd.MultiIndex.from_tuples(cols)
     df = pd.DataFrame(rows, counts, col_list)
     df.to_excel(f"./output/results.xlsx")
@@ -81,7 +81,7 @@ def run(file, count, prev):
     format_time = time() - start
     total_time += format_time
     time_row.append(start + format_time)
-    row.extend(calc_increase(prev, format_time, row))
+    row.extend(calc_increase(prev, format_time, row) + [0])
 
     start = time()
     # Loading JSON file to Python Dataframe (simdjson vs polars)
@@ -91,7 +91,7 @@ def run(file, count, prev):
     load_time = time() - start
     total_time += load_time
     time_row.append(start + load_time)
-    row.extend(calc_increase(prev, load_time, row))
+    row.extend(calc_increase(prev, load_time, row) + [0])
 
     start = time()
     # Using Pivot table to recieve appropriate output
@@ -100,7 +100,7 @@ def run(file, count, prev):
     pivot_time = time() - start
     total_time += pivot_time
     time_row.append(start + pivot_time)
-    row.extend(calc_increase(prev, pivot_time, row))
+    row.extend(calc_increase(prev, pivot_time, row) + [0])
 
     start = time()
     # Converting to Parquet
@@ -108,7 +108,7 @@ def run(file, count, prev):
     convert_time = time() - start
     total_time += convert_time
     time_row.append(start + convert_time)
-    row.extend(calc_increase(prev, convert_time, row))
+    row.extend(calc_increase(prev, convert_time, row) + [0])
     return (filename, f"{filename[:-5]}.parquet", total_time, row, time_row)
 
 
@@ -139,5 +139,5 @@ def main(file, counts):
 
 
 main("sample_json_test_data_2.json", [124037])
-# main("connectdata-day=2022-09-19_device=s_96_0.json", [453132])``
+# main("connectdata-day=2022-09-19_device=s_96_0.json", [453132])
 # main("connectdata-day=2022-09-19_device=s_96_2.json", [836753])

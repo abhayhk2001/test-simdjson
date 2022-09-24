@@ -14,7 +14,7 @@ sudo systemctl start collectd.service
 cd test-simdjson/
 source env/bin/activate
 echo $EPOCHREALTIME
-python without_memory/main.py
+python collectd/main.py
 sudo systemctl stop collectd.service
 
 ## find output file
