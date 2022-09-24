@@ -44,7 +44,7 @@ def compare_gz(parquet_gz, filename):
     os.remove(parquet_gz+'.gz')
 
 
-def create_df(fname, rows, counts):
+def create_df(rows, counts):
     col_name = ['Formatting', 'Loading File',
                 'Pivotting Table', 'Converting Table to Parquet']
     col_name_sub = ['Time', 'Increase']
@@ -52,24 +52,35 @@ def create_df(fname, rows, counts):
     for i in col_name:
         for j in col_name_sub:
             cols.append((i, j))
-    cols.extend([('Total', 'Time'), ('Total', 'Increase')])
+    cols.extend([('Total', 'Time'), ('Total', 'Increase', 'Avg Memory(GB)')])
     col_list = pd.MultiIndex.from_tuples(cols)
     df = pd.DataFrame(rows, counts, col_list)
-    df.to_excel(f"./output/results_{fname[:-5]}.xlsx")
+    df.to_excel(f"./output/results.xlsx")
 
     print(df)
+
+
+def make_time_df(rows, counts):
+    cols = ['Start', 'Formatting', 'Loading File',
+            'Pivotting Table', 'Converting Table to Parquet']
+    df = pd.DataFrame(rows, counts, cols)
+    df.to_csv(f"./output/results_time.csv")
+    pass
 
 
 def run(file, count, prev):
     # Starting Time Recording
     total_time = 0
     row = []
+    time_row = []
     start = time()
+    time_row.append(start)
 
     # Formatting JSON
     filename = format_file(file, count)
     format_time = time() - start
     total_time += format_time
+    time_row.append(start + format_time)
     row.extend(calc_increase(prev, format_time, row))
 
     start = time()
@@ -79,6 +90,7 @@ def run(file, count, prev):
     df = pd.DataFrame(doc)
     load_time = time() - start
     total_time += load_time
+    time_row.append(start + load_time)
     row.extend(calc_increase(prev, load_time, row))
 
     start = time()
@@ -87,6 +99,7 @@ def run(file, count, prev):
                         columns='data_item_name', values='value', aggfunc='first')
     pivot_time = time() - start
     total_time += pivot_time
+    time_row.append(start + pivot_time)
     row.extend(calc_increase(prev, pivot_time, row))
 
     start = time()
@@ -94,12 +107,13 @@ def run(file, count, prev):
     df.to_parquet(f"{filename[:-5]}.parquet", engine="pyarrow")
     convert_time = time() - start
     total_time += convert_time
+    time_row.append(start + convert_time)
     row.extend(calc_increase(prev, convert_time, row))
-    return (filename, f"{filename[:-5]}.parquet", total_time, row)
+    return (filename, f"{filename[:-5]}.parquet", total_time, row, time_row)
 
 
 def main(file, counts):
-    rows, prev = [], []
+    rows, prev, time_rows = [], [], []
     final_parquet = ""
     for count in counts:
         if count == 0:
@@ -107,7 +121,7 @@ def main(file, counts):
         else:
             print(f"Running for count: {count}")
 
-        (fname, parquet_name, total_time, row) = run(file, count, prev)
+        (fname, parquet_name, total_time, row, time_row) = run(file, count, prev)
 
         row.extend(calc_increase(prev, total_time, row))
         prev = row
@@ -118,10 +132,12 @@ def main(file, counts):
             final_parquet = "./extras" + parquet_name[6:]
             os.replace(parquet_name, "./extras"+parquet_name[6:])
         rows.append(row)
+        time_rows.append(time_row)
     compare_gz(final_parquet, file)
-    create_df(file, rows, counts)
+    create_df(rows, counts)
+    make_time_df(time_rows, counts)
 
 
 main("sample_json_test_data_2.json", [124037])
-# main("connectdata-day=2022-09-19_device=s_96_0.json", [453132])
+# main("connectdata-day=2022-09-19_device=s_96_0.json", [453132])``
 # main("connectdata-day=2022-09-19_device=s_96_2.json", [836753])

@@ -4,6 +4,10 @@ rm output/*
 ### download output files
 readlink -f output/
 
+# Configuring Collectd
+sudo vim /etc/collectd/collectd.conf
+
+
 ## Running Collectd
 sudo systemctl stop collectd.service
 sudo systemctl start collectd.service
