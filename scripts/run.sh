@@ -4,7 +4,7 @@ rm output/*
 ### download output files
 readlink -f output/
 
-# Configuring Collectd
+# Configuring Collectd\
 sudo vim /etc/collectd/collectd.conf
 
 
@@ -19,6 +19,12 @@ sudo systemctl stop collectd.service
 
 ## find output file
 readlink -f /var/lib/collectd/csv/intel-ather-test.c.lucky-rookery-360910.internal/memory/memory-u<tab>
+
+## Move Output CSV file
+mv /var/lib/collectd/csv/intel-ather-test.c.lucky-rookery-360910.internal/memory/memory-u<tab> ~/test-simdjson/extras/collectd.csv
+
+## Consolidate collectd files
+
 
 
 ## remove all files in csv
