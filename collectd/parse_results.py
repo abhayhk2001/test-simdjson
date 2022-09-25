@@ -5,7 +5,7 @@ def make_df(rows, counts, fname):
     cols = ['Formatting', 'Loading File',
             'Pivotting Table', 'Converting Table to Parquet']
     df = pd.DataFrame(rows, counts, cols)
-    df.to_csv(fname)
+    df.to_excel(fname)
 
 
 def parse_results(resource_file):
@@ -29,7 +29,7 @@ def parse_results(resource_file):
                 round(collectd_results.iloc[intervals[k]:intervals[k+1], 1].mean()/(10**9), 4))
             k += 1
         rows.append(row)
-    make_df(rows, counts, f"./output/results_{resource_file}.csv")
+    make_df(rows, counts, f"./output/results_{resource_file}.xlsx")
 
 
 parse_results("memory")
