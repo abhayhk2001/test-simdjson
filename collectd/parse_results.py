@@ -5,7 +5,7 @@ def make_df(rows, counts, fname):
     cols = ['Formatting', 'Loading File',
             'Pivotting Table', 'Converting Table to Parquet']
     df = pd.DataFrame(rows, counts, cols)
-    df.to_csv(f"./output/{fname}.csv")
+    df.to_csv(fname)
 
 
 def parse_results(resource_file):

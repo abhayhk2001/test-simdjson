@@ -21,7 +21,7 @@ sudo systemctl stop collectd.service
 readlink -f /var/lib/collectd/csv/intel-ather-test.c.lucky-rookery-360910.internal/memory/memory-u<tab>
 
 ## Move Output CSV file
-cp /var/lib/collectd/csv/intel-ather-test.c.lucky-rookery-360910.internal/memory/memory-u<tab> ~/test-simdjson/extras/collectd.csv
+cp /var/lib/collectd/csv/intel-ather-test.c.lucky-rookery-360910.internal/memory/memory-u<tab> ~/test-simdjson/extras/collectd_memory.csv
 
 ## Consolidate collectd files
 
