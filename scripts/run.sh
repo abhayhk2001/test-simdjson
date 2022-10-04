@@ -1,3 +1,6 @@
+#Installing Collectd
+sudo apt-get install collectd
+
 # Configuring Collectd
 sudo vim /etc/collectd/collectd.conf
 
