@@ -11,7 +11,7 @@ source env/bin/activate
 sudo rm -rf /var/lib/collectd/csv/
 sudo systemctl stop collectd.service
 sudo systemctl start collectd.service
-python collectd/main.py
+python test/test_4vs8.py
 sudo systemctl stop collectd.service
 
 ## Move Output CSV file
@@ -28,3 +28,6 @@ sudo rm -rf /var/lib/collectd/csv/
 
 ## Remove output.zip file
 rm output.zip
+
+## Clear all Cache
+sync; echo 3 > /proc/sys/vm/drop_caches 
