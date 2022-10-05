@@ -30,4 +30,4 @@ sudo rm -rf /var/lib/collectd/csv/
 rm output.zip
 
 ## Clear all Cache
-sync; echo 3 > /proc/sys/vm/drop_caches 
+sync; echo 3 > sudo /proc/sys/vm/drop_caches 
