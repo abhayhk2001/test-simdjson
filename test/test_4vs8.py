@@ -152,5 +152,5 @@ fname3 = "connectdata-day=2022-09-19_device=s_96_3.json"
 # main([("file1", fname1, 453132), ("file2", fname2, 453132), ("file2", fname2, 836753),("file3", fname3, 453132), ("file3", fname3, 836753), ("file3", fname3, 1000000)])
 # main([("file3", fname3, 1000000), ("file2", fname2, 836753), ("file1", fname1, 453132),("file3", fname3, 836753), ("file2", fname2, 453132), ("file3", fname3, 453132)])
 # main([("file2", fname2, 453132), ("file2", fname2, 500000), ("file2", fname2, 550000), ("file2", fname2, 600000), ("file2", fname2, 700000), ("file2", fname2, 800000), ("file2", fname2, 836753)])
-main([("file1", fname1, 100000), ("file1", fname1, 200000), ("file1", fname1, 300000), ("file1", fname1, 400000), ("file1", fname1, 500000),
-     ("file1", fname1, 600000), ("file1", fname1, 700000), ("file1", fname1, 800000), ("file1", fname1, 836753), ("file1", fname1, 900000), ("file1", fname1, 1000000)])
+main([("file3", fname3, 100000), ("file3", fname3, 200000), ("file3", fname3, 300000), ("file3", fname3, 400000), ("file3", fname3, 500000),
+     ("file3", fname3, 600000), ("file3", fname3, 700000), ("file3", fname3, 800000), ("file3", fname3, 836753), ("file3", fname3, 900000), ("file3", fname3, 1000000)])
