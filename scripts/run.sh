@@ -1,12 +1,14 @@
 #Installing Collectd
 sudo apt-get install collectd
+sudo amazon-linux-extras install collectd
 
 # Configuring Collectd
 sudo vim /etc/collectd/collectd.conf
+sudo vim /etc/collectd.conf
 
 ## Running Collectd
 cd test-simdjson/
-rm output/* extras/*
+sudo rm -rf output/* extras/*
 source env/bin/activate
 sudo rm -rf /var/lib/collectd/csv/
 sudo systemctl stop collectd.service

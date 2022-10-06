@@ -150,4 +150,6 @@ fname3 = "connectdata-day=2022-09-19_device=s_96_3.json"
 # main([("file1",fname2, 836753)])
 # main([("file1",fname3, 1000000)])
 # main([("file1", fname1, 453132), ("file2", fname2, 453132), ("file2", fname2, 836753),("file3", fname3, 453132), ("file3", fname3, 836753), ("file3", fname3, 1000000)])
+main([("file3", fname3, 1000000), ("file2", fname2, 836753), ("file1", fname1, 453132),
+     ("file3", fname3, 836753), ("file2", fname2, 453132), ("file3", fname3, 453132)])
 # main([("file2", fname2, 453132), ("file2", fname2, 500000), ("file2", fname2, 550000), ("file2", fname2, 600000), ("file2", fname2, 700000), ("file2", fname2, 800000), ("file2", fname2, 836753)])
