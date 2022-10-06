@@ -16,6 +16,9 @@ sudo systemctl start collectd.service
 python test/test_4vs8.py
 sudo systemctl stop collectd.service
 
+## Results XSLX
+/home/anand_navchetana/test-simdjson/output/results.xlsx
+
 ## Move Output CSV file
 cp /var/lib/collectd/csv/intel-ather-test.c.lucky-rookery-360910.internal/memory/memory-u<tab> ~/test-simdjson/extras/collectd_memory.csv
 
