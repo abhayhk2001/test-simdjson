@@ -116,7 +116,7 @@ def main(file_counts):
     rows, prev, time_rows = [], [], []
     final_parquet = ""
     counts = []
-    for (findex, file, count) in file_counts:
+    for i, (findex, file, count) in enumerate(file_counts):
         counts.append(count)
         if count == 0:
             print(f"Running for whole file")
@@ -129,7 +129,7 @@ def main(file_counts):
         row.extend(calc_increase(prev, total_time, row))
         prev = row
         os.remove(fname)
-        if (count != counts[-1]):
+        if (i != len(file_counts)-1):
             os.remove(parquet_name)
         else:
             final_parquet = "./extras" + parquet_name[6:]
@@ -149,9 +149,7 @@ fname3 = "connectdata-day=2022-09-19_device=s_96_3.json"
 # main([("file1",fname1, 453132)])
 # main([("file1",fname2, 836753)])
 # main([("file1",fname3, 1000000)])
-# main([("file1", fname1, 453132), ("file2", fname2, 453132), ("file2", fname2, 836753),("file3", fname3, 453132), ("file3", fname3, 836753), ("file3", fname3, 1000000)])
 # main([("file3", fname3, 1000000), ("file2", fname2, 836753), ("file1", fname1, 453132),("file3", fname3, 836753), ("file2", fname2, 453132), ("file3", fname3, 453132)])
 # main([("file2", fname2, 453132), ("file2", fname2, 500000), ("file2", fname2, 550000), ("file2", fname2, 600000), ("file2", fname2, 700000), ("file2", fname2, 800000), ("file2", fname2, 836753)])
-main([("file3", fname3, 100000), ("file3", fname3, 200000), ("file3", fname3, 300000), ("file3", fname3, 400000), ("file3", fname3, 500000), ("file3",
-     fname3, 600000), ("file3", fname3, 700000), ("file3", fname3, 800000), ("file3", fname3, 836753), ("file3", fname3, 900000), ("file3", fname3, 1000000)])
-main([("file3", fname3, 836753), ("file3", fname3, 836754)])
+# main([("file3", fname3, 100000), ("file3", fname3, 200000), ("file3", fname3, 300000), ("file3", fname3, 400000), ("file3", fname3, 500000), ("file3",fname3, 600000), ("file3", fname3, 700000), ("file3", fname3, 800000), ("file3", fname3, 836753), ("file3", fname3, 900000), ("file3", fname3, 1000000)])
+# main([("file3", fname3, 836753), ("file3", fname3, 836754)])
