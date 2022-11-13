@@ -95,6 +95,7 @@ def run(findex, file, count, prev):
 
     start = time()
     # Using Pivot table to recieve appropriate output
+    print(df)
     df = df.pivot_table(index=['timestamp', 'device_uuid'],
                         columns='data_item_name', values='value', aggfunc='first')
     pivot_time = time() - start
@@ -128,7 +129,7 @@ def main(file_counts):
 
         row.extend(calc_increase(prev, total_time, row))
         prev = row
-        os.remove(fname)
+        # os.remove(fname)
         if (i != len(file_counts)-1):
             os.remove(parquet_name)
         else:
@@ -148,7 +149,7 @@ fname4 = "connectdata-day=2022-09-19_device=s_96_4.json"
 
 # main([("file1","sample_json_test_data_2.json", 124037)])
 # main([("file1",fname1, 453132)])
-# main([("file1",fname2, 836753)])
+main([("file1", fname2, 836753)])
 # main([("file1",fname3, 1000000)])
 # main([("file3", fname3, 1000000), ("file2", fname2, 836753), ("file1", fname1, 453132),("file3", fname3, 836753), ("file2", fname2, 453132), ("file3", fname3, 453132)])
 # main([("file2", fname2, 453132), ("file2", fname2, 500000), ("file2", fname2, 550000), ("file2", fname2, 600000), ("file2", fname2, 700000), ("file2", fname2, 800000), ("file2", fname2, 836753)])
